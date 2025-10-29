@@ -8,6 +8,17 @@ const CampgroundSchema = new Schema({
     image : String,
     description: String,
     location: String,
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
      reviews: [
         {
             type: Schema.Types.ObjectId,

@@ -1,0 +1,6 @@
+- [x] Update schemas.js to allow geometry in campgroundSchema
+- [x] Fix API key inconsistency in locationPicker.js (use mapTilerKey from render)
+- [x] Remove duplicate autocomplete.js from new.ejs and integrate functionality into locationPicker.js
+- [x] Fix updateMapLocation call in locationPicker.js to use updateMapFromLocation
+- [x] Fix autocomplete by setting MAPTILER_KEY on window object
+- [ ] Test the fixes
