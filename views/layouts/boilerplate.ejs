@@ -4,35 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>YelpCamp</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
-    <link
-      href="https://cdn.maptiler.com/maptiler-geocoding-control/v1.2.0/maptiler-geocoding-control.css"
-      rel="stylesheet"
-    />
+    <!-- -----------------------------------------------------
+         BOOTSTRAP (v5.0 alpha)
+    ------------------------------------------------------ -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+          crossorigin="anonymous">
 
+    <!-- -----------------------------------------------------
+         MAPTILER SDK + GEOCODING CONTROL
+         (Required for maps across project)
+    ------------------------------------------------------ -->
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
+
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css"
+          rel="stylesheet" />
+
+    <link href="https://cdn.maptiler.com/maptiler-geocoding-control/v1.2.0/maptiler-geocoding-control.css"
+          rel="stylesheet" />
+
+
+    <!-- -----------------------------------------------------
+         GLOBAL APP STYLES
+    ------------------------------------------------------ -->
     <link rel="stylesheet" href="/stylesheets/app.css">
+
 </head>
 
+
 <body class="d-flex flex-column min-vh-100">
-    <%- include('../partials/navbar')%>
+
+    <!-- Navbar (shared across all pages) -->
+    <%- include('../partials/navbar') %>
+
+    <!-- Page Content (injected from individual views) -->
     <main class="container mt-5">
-        <%- include('../partials/flash')%>
+        <%- include('../partials/flash') %>
         <%- body %>
     </main>
-    <%- include('../partials/footer')%>
+
+    <!-- Footer (shared across all pages) -->
+    <%- include('../partials/footer') %>
+
+
+    <!-- -----------------------------------------------------
+         JAVASCRIPT: Bootstrap + Popper
+    ------------------------------------------------------ -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous">
+    </script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-        crossorigin="anonymous"></script>
+            integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+            crossorigin="anonymous">
+    </script>
 
-        <script src="/javascripts/validateForms.js"></script>
+    <!-- Client-side form validation -->
+    <script src="/javascripts/validateForms.js"></script>
+
 </body>
-
 </html>

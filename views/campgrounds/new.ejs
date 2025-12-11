@@ -1,72 +1,114 @@
-<% layout('layouts/boilerplate')%>
+<% layout('layouts/boilerplate') %>
+
 <div class="row">
+    <!-- Page Title -->
     <h1 class="text-center">New Campground</h1>
+
     <div class="col-md-6 offset-md-3">
-        <form action="/campgrounds" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+
+        <!-- Create Campground Form -->
+        <form action="/campgrounds"
+              method="POST"
+              enctype="multipart/form-data"
+              class="validated-form"
+              novalidate>
+
+            <!-- Title Field -->
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+                <input class="form-control"
+                       type="text"
+                       id="title"
+                       name="campground[title]"
+                       required>
+                <div class="valid-feedback">Looks good!</div>
             </div>
+
+            <!-- Location Field -->
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+                <input class="form-control"
+                       type="text"
+                       id="location"
+                       name="campground[location]"
+                       required>
+                <div class="valid-feedback">Looks good!</div>
             </div>
 
-            <div id="map" class="mb-3" style="width: 100%; height: 300px;"></div>
+            <!-- Interactive Map (MapTiler) -->
+            <!-- formMap.js will convert selected map coordinates into a location string -->
+            <div id="map"
+                 class="mb-3"
+                 style="width: 100%; height: 300px;">
+            </div>
 
-            <!-- <div class="mb-3">
-                <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="campground[image]" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div> -->
+            <!-- Price Field -->
             <div class="mb-3">
                 <label class="form-label" for="price">Campground Price</label>
+
                 <div class="input-group">
                     <span class="input-group-text" id="price-label">$</span>
-                    <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
-                        aria-describedby="price-label" name="campground[price]" required>
+
+                    <input type="text"
+                           class="form-control"
+                           id="price"
+                           placeholder="0.00"
+                           aria-label="price"
+                           aria-describedby="price-label"
+                           name="campground[price]"
+                           required>
                 </div>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+
+                <div class="valid-feedback">Looks good!</div>
             </div>
 
+            <!-- Description Field -->
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="campground[description]"
-                    required></textarea>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+
+                <textarea class="form-control"
+                          id="description"
+                          name="campground[description]"
+                          required></textarea>
+
+                <div class="valid-feedback">Looks good!</div>
             </div>
+
+            <!-- Image Upload -->
             <div class="mb-3">
                 <div class="form-file custom-file">
-                    <input type="file" class="form-file-input" id="image" name="image" multiple>
+                    <input type="file"
+                           class="form-file-input"
+                           id="image"
+                           name="image"
+                           multiple>
+
                     <label class="form-file-label" for="image">
                         <span class="form-file-text custom-file-label">Choose image(s)...</span>
                         <span class="form-file-button">Browse</span>
                     </label>
                 </div>
             </div>
+
+            <!-- Submit Button -->
             <div class="mb-3">
                 <button class="btn btn-success">Add Campground</button>
             </div>
         </form>
+
+        <!-- Back Link -->
         <a href="/campgrounds">All Campgrounds</a>
+
     </div>
 </div>
 
+<!-- -----------------------------------------------------
+     MapTiler Key for formMap.js
+     Note: No 'campground' object here → script defaults to NEW form behavior.
+------------------------------------------------------ -->
 <script>
-  // Safely inject the MapTiler key.
-  // The 'campground' variable is not defined here, so formMap.js will use defaults.
-  const mapToken = <%- JSON.stringify(mapTilerKey) %>;
+    const mapToken = <%- JSON.stringify(mapTilerKey) %>;
 </script>
+
+<!-- Interactive map logic (drag marker, autocomplete, click-to-set) -->
 <script src="/javascripts/formMap.js"></script>

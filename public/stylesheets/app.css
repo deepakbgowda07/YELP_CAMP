@@ -1,28 +1,51 @@
-/* This file is for general application styling not covered by Bootstrap or home.css/map.css.
-It ensures images are responsive and form styling is correct across the application.
-*/
+/**
+ * app.css
+ * -----------------------------------------------------
+ * Global styles shared across the entire application.
+ *
+ * Purpose:
+ *  - Provide layout/styling not covered by Bootstrap
+ *  - Ensure footers behave well on all pages
+ *  - Improve custom file input styling
+ *  - Make images responsive by default
+ */
 
+
+/* -----------------------------------------------------
+   FOOTER STYLING
+   Ensures footer spans full width and stays bottom-aligned
+------------------------------------------------------ */
 .footer {
     position: relative;
     bottom: 0;
     width: 100%;
 }
 
-/* Fix for custom file input styling on Bootstrap 5 alpha */
+
+/* -----------------------------------------------------
+   CUSTOM FILE INPUT STYLES
+   Used when enhancing file upload controls in forms
+------------------------------------------------------ */
+
+/* Fix for long filenames being clipped incorrectly */
 .form-file-label {
     overflow: hidden;
     white-space: nowrap;
 }
 
+/* Improve clickable area and alignment for file input button */
 .form-file-button {
     text-align: center;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
+    padding: 0 0.75rem;
 }
 
-/* Ensure images are fluid within their containers */
+
+/* -----------------------------------------------------
+   RESPONSIVE IMAGES
+   Ensures images scale well inside their containers
+------------------------------------------------------ */
 .img-fluid {
     width: 100%;
     height: auto;
-    object-fit: cover;
+    object-fit: cover; /* prevents distortion when images are constrained */
 }

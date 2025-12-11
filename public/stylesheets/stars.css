@@ -1,40 +1,61 @@
+/**
+ * starability.css
+ * -----------------------------------------------------
+ * Provides visual star rating widgets for:
+ *  - Displaying review ratings (read-only)
+ *  - Creating/editing ratings (interactive)
+ *
+ * Uses base64-encoded star images for:
+ *  - Empty stars
+ *  - Filled stars on hover / selection
+ *
+ * Supports both:
+ *  - starability-result (display-only)
+ *  - starability-basic  (interactive rating)
+ */
+
+
+/* -----------------------------------------------------
+   DISPLAY-ONLY STAR RATING
+   Example: <div class="starability-result" data-rating="4">
+------------------------------------------------------ */
+
 .starability-result {
     position: relative;
     width: 150px;
     height: 25px;
+
+    /* Empty star sprite (base64 image) */
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
-    font-size: 0.1em;
-    color: transparent;
+
+    font-size: 0.1em;   /* hides text visually */
+    color: transparent; /* prevents textual rating from showing */
 }
 
+/* Filled star overlay */
 .starability-result:after {
     content: ' ';
     position: absolute;
     left: 0;
     height: 25px;
+
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
     background-repeat: repeat-x;
 }
 
-.starability-result[data-rating="5"]::after {
-    width: 150px;
-}
+/* Rating widths: determines how many stars are filled */
+.starability-result[data-rating="5"]::after { width: 150px; }
+.starability-result[data-rating="4"]::after { width: 120px; }
+.starability-result[data-rating="3"]::after { width: 90px; }
+.starability-result[data-rating="2"]::after { width: 60px; }
+.starability-result[data-rating="1"]::after { width: 30px; }
 
-.starability-result[data-rating="4"]::after {
-    width: 120px;
-}
 
-.starability-result[data-rating="3"]::after {
-    width: 90px;
-}
-
-.starability-result[data-rating="2"]::after {
-    width: 60px;
-}
-
-.starability-result[data-rating="1"]::after {
-    width: 30px;
-}
+/* -----------------------------------------------------
+   INTERACTIVE STAR RATING (FOR FORMS)
+   Example:
+     <fieldset class="starability-basic">
+------------------------------------------------------ */
 
 .starability-basic {
     display: block;
@@ -45,29 +66,38 @@
     border: none;
 }
 
+/* Hide radio inputs visually, but keep them clickable */
 .starability-basic input {
     position: absolute;
     margin-right: -100%;
-    opacity: 0;
+    opacity: 0; /* fully invisible */
 }
 
+/* Star icons */
 .starability-basic label {
     display: inline-block;
     float: left;
+
     width: 30px;
     height: 30px;
+
     font-size: 0.1em;
     color: transparent;
+
     cursor: pointer;
+
+    /* Empty star image */
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
 }
 
+/* When selected or hovered → show filled star */
 .starability-basic input:checked ~ label,
 .starability-basic label:hover,
 .starability-basic label:hover ~ label {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
 }
 
+/* "No rating" option hidden (if present) */
 .starability-basic .input-no-rate {
     display: none;
 }

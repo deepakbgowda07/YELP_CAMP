@@ -1,29 +1,64 @@
+/**
+ * formMap.js
+ * -----------------------------------------------------
+ * Handles interactive map functionality on:
+ *  - New Campground page
+ *  - Edit Campground page
+ *
+ * Features:
+ *  - Draggable marker
+ *  - Click-to-update location
+ *  - Reverse geocoding for automatic place names
+ *  - Search bar (GeocodingControl) to update map + marker
+ *  - Auto-fill the "location" input field
+ */
+
+// Configure MapTiler with API key passed from EJS
 maptilersdk.config.apiKey = mapToken;
 
-// --- Helper function for reverse geocoding ---
+
+/* -----------------------------------------------------
+   Helper: Reverse Geocode → Convert Coordinates to Place Name
+------------------------------------------------------ */
 async function getPlaceName(lngLat) {
     try {
         const results = await maptilersdk.geocoding.reverse(lngLat, { apiKey: mapToken });
+
         if (results.features && results.features.length > 0) {
             return results.features[0].place_name;
         }
     } catch (err) {
         console.error("Error reverse geocoding:", err);
     }
-    return "Unknown location"; // Fallback
+
+    // Fallback in case geocoder fails
+    return "Unknown location";
 }
 
-// --- Determine start coordinates and zoom ---
+
+/* -----------------------------------------------------
+   Determine if we're on:
+   - Edit Page (campground object exists)
+   - New Page (campground undefined)
+------------------------------------------------------ */
 const onEditPage = typeof campground !== 'undefined';
+
+// Starting coordinates + zoom
 const startCoords = onEditPage
     ? campground.geometry.coordinates
-    : [-98.5795, 39.8283]; // Default: Center of US
+    : [-98.5795, 39.8283]; // Default center (USA)
 const startZoom = onEditPage ? 8 : 3;
 
-// --- Get the location input field ---
+
+/* -----------------------------------------------------
+   DOM Reference
+------------------------------------------------------ */
 const locationInput = document.getElementById('location');
 
-// --- Initialize the map ---
+
+/* -----------------------------------------------------
+   MAP INITIALIZATION
+------------------------------------------------------ */
 const map = new maptilersdk.Map({
     container: 'map',
     style: maptilersdk.MapStyle.BRIGHT,
@@ -31,76 +66,95 @@ const map = new maptilersdk.Map({
     zoom: startZoom
 });
 
-// --- Initialize the marker ---
+
+/* -----------------------------------------------------
+   MARKER INITIALIZATION (Draggable)
+------------------------------------------------------ */
 const marker = new maptilersdk.Marker({
     draggable: true
 })
     .setLngLat(startCoords)
     .addTo(map);
 
-// --- Initialize the Geocoding search control ---
+
+/* -----------------------------------------------------
+   GEOCODING SEARCH BAR (Top-left)
+------------------------------------------------------ */
 try {
     const geocodingControl = new maptilersdk.GeocodingControl({
         apiKey: mapToken,
-        marker: false // We will use our own marker
+        marker: false // We manage marker manually
     });
 
     map.addControl(geocodingControl, 'top-left');
 
-    // --- EVENT LISTENERS ---
-
-    // 1. When a search result is picked (LIVE UPDATE)
+    /**
+     * When a search result is selected:
+     *  - Move the marker
+     *  - Pan map
+     *  - Update live location input
+     */
     geocodingControl.on('pick', (e) => {
         const coords = e.result.geometry.coordinates;
         const placeName = e.result.place_name;
 
-        console.log('Search "pick" event:', placeName);
-        marker.setLngLat(coords); // Move marker
-        map.easeTo({ center: coords, zoom: 10 }); // Pan map
-        locationInput.value = placeName; // <<<<<< THE LIVE UPDATE
+        console.log('Search result:', placeName);
+
+        marker.setLngLat(coords);
+        map.easeTo({ center: coords, zoom: 10 });
+        locationInput.value = placeName; // LIVE UPDATE
     });
 
-} catch (e) {
-    console.error("Failed to load GeocodingControl. Did you add the CSS to boilerplate.ejs?", e);
+} catch (err) {
+    console.error("Failed to load GeocodingControl. Did you include the CSS?", err);
 }
 
 
-// 2. When the map is clicked (LIVE UPDATE)
+/* -----------------------------------------------------
+   MAP CLICK EVENT → Move Marker + Update Location
+------------------------------------------------------ */
 map.on('click', async (e) => {
     try {
         const coords = e.lngLat;
-        console.log('Map click event at:', coords);
-        marker.setLngLat(coords); // Move marker
+
+        console.log("Map clicked:", coords);
+        marker.setLngLat(coords);
 
         const placeName = await getPlaceName([coords.lng, coords.lat]);
-        locationInput.value = placeName; // <<<<<< THE LIVE UPDATE
+        locationInput.value = placeName; // LIVE UPDATE
     } catch (err) {
         console.error("Error on map click:", err);
     }
 });
 
-// 3. When the marker is dragged (LIVE UPDATE)
+
+/* -----------------------------------------------------
+   MARKER DRAG → Live Location Update
+------------------------------------------------------ */
 marker.on('dragend', async (e) => {
     try {
         const coords = e.target.getLngLat();
-        console.log('Marker drag event:', coords);
+
+        console.log("Marker dragged:", coords);
 
         const placeName = await getPlaceName([coords.lng, coords.lat]);
-        locationInput.value = placeName; // <<<<<< THE LIVE UPDATE
+        locationInput.value = placeName; // LIVE UPDATE
     } catch (err) {
         console.error("Error on marker drag:", err);
     }
 });
 
-// --- Set initial input value ---
+
+/* -----------------------------------------------------
+   INITIAL PLACE NAME (For NEW Form Only)
+------------------------------------------------------ */
 async function setInitialLocation() {
-    // Only set default on NEW form
     if (!onEditPage) {
-        console.log('Setting default location for new form...');
+        console.log("Setting default location via reverse geocoding...");
         const placeName = await getPlaceName(startCoords);
         locationInput.value = placeName;
     }
 }
 
-// Run the initial setup
+// Initialize default location (only for create form)
 setInitialLocation();

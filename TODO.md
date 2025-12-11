@@ -1,2 +1,0 @@
-- [ ] Add readonly attribute and instruction text to location input in views/campgrounds/new.ejs
-- [ ] Add readonly attribute and instruction text to location input in views/campgrounds/edit.ejs

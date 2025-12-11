@@ -1,35 +1,78 @@
+/**
+ * home.css
+ * -----------------------------------------------------
+ * Styles for the home/landing page of the application.
+ * Includes:
+ *  - Fullscreen background hero section
+ *  - Styled navigation links
+ *  - Button overrides for dark background
+ */
+
+
+/* -----------------------------------------------------
+   FULLSCREEN BACKGROUND / HERO SECTION
+------------------------------------------------------ */
 body {
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+
+    /* Dark overlay + background photo */
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5), 
+        rgba(0, 0, 0, 0.5)
+    ),
     url("https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
-    background-size: cover;
-    background-position: center;
+
+    background-size: cover;      /* Ensures full-screen background */
+    background-position: center; /* Keeps focal point centered */
+
+    /* Subtle text shadow for improved readability */
     text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+
+    /* Adds inward shading to darken edges */
     box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
 }
 
+
+/* -----------------------------------------------------
+   CONTENT CONTAINER
+   Restricts width to keep hero content readable
+------------------------------------------------------ */
 .cover-container {
     max-width: 60vw;
 }
 
+
+/* -----------------------------------------------------
+   NAVIGATION LINKS
+------------------------------------------------------ */
 .nav-link {
     padding: 0.25rem 0;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.5);
+
+    color: rgba(255, 255, 255, 0.5);      /* Slightly transparent text */
     margin-left: 1rem;
-    border-bottom: 0.25rem solid transparent;
+
+    border-bottom: 0.25rem solid transparent;  /* Underline shown on hover */
 }
 
+/* Hover state */
 .nav-link:hover {
     color: rgba(255, 255, 255, 0.5);
     border-bottom-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Active (current page) state */
 .nav-link.active {
     color: white;
     border-bottom-color: white;
 }
 
+
+/* -----------------------------------------------------
+   BUTTON STYLING
+   Removes Bootstrap's default white text-shadow
+   which looks weird on dark backgrounds
+------------------------------------------------------ */
 .btn-secondary,
 .btn-secondary:hover {
     color: #333;

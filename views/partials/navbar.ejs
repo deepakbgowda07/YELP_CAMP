@@ -1,24 +1,56 @@
+<!-- =====================================================
+     NAVBAR PARTIAL
+     Appears on every page via boilerplate.ejs.
+     Includes:
+       - Brand
+       - Navigation links
+       - Auth-aware Login / Logout state
+====================================================== -->
+
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">YelpCamp</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+
+        <!-- Brand / Logo -->
+        <a class="navbar-brand" href="/">YelpCamp</a>
+
+        <!-- Mobile Navigation Toggle Button -->
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
             <span class="navbar-toggler-icon"></span>
         </button>
+
+
+        <!-- NAV LINKS -->
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+            <!-- Left-side Navigation -->
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/campgrounds">Campgrounds</a>
                 <a class="nav-link" href="/campgrounds/new">New Campground</a>
             </div>
+
+            <!-- Right-side User Authentication Links -->
             <div class="navbar-nav ml-auto">
-                <% if(!currentUser) {%>
-                <a class="nav-link" href="/login">Login</a>
-                <a class="nav-link" href="/register">Register</a>
-                <% } else {%>
-                <a class="nav-link" href="/logout">Logout</a>
+
+                <% if (!currentUser) { %>
+                    <!-- When user is NOT logged in -->
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+
+                <% } else { %>
+                    <!-- When user IS logged in -->
+                    <a class="nav-link" href="/logout">Logout</a>
                 <% } %>
+
             </div>
+
         </div>
     </div>
 </nav>

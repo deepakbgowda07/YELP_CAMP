@@ -1,5 +1,20 @@
+/**
+ * clusterMap.js
+ * -----------------------------------------------------
+ * Displays a clustered map of all campgrounds on the index page.
+ *
+ * Dependencies injected from EJS:
+ *  - mapToken           (MapTiler API key)
+ *  - campgroundsData    (array of campground objects with geometry)
+ */
+
+// Configure MapTiler SDK with your API key
 maptilersdk.config.apiKey = mapToken;
 
+/**
+ * Initialize map centered on the USA.
+ * The container ID must match <div id="cluster-map"> in index.ejs.
+ */
 const map = new maptilersdk.Map({
     container: 'cluster-map',
     style: maptilersdk.MapStyle.BRIGHT,
@@ -7,8 +22,16 @@ const map = new maptilersdk.Map({
     zoom: 3
 });
 
+
+/* -----------------------------------------------------
+   MAP LOADED → ADD CAMPGROND DATA + LAYERS
+------------------------------------------------------ */
 map.on('load', function () {
-    // Add a geojson point source.
+
+    /**
+     * Add a GeoJSON data source for all campgrounds.
+     * Clustering is handled by MapTiler automatically.
+     */
     map.addSource('campgrounds', {
         type: 'geojson',
         data: {
@@ -17,44 +40,49 @@ map.on('load', function () {
                 type: 'Feature',
                 geometry: campground.geometry,
                 properties: {
-                    popUpMarkup: campground.properties?.popUpMarkup || `<strong><a href="/campgrounds/${campground._id}">${campground.title}</a></strong>`
+                    // For popups — fallback in case popUpMarkup missing
+                    popUpMarkup:
+                        campground.properties?.popUpMarkup ||
+                        `<strong><a href="/campgrounds/${campground._id}">${campground.title}</a></strong>`
                 }
             }))
         },
         cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+        clusterMaxZoom: 14, // Maximum zoom for clustering
+        clusterRadius: 50   // Cluster radius in pixels
     });
 
+
+    /* -----------------------------------------------------
+       CLUSTERED POINTS LAYER
+    ------------------------------------------------------ */
     map.addLayer({
         id: 'clusters',
         type: 'circle',
         source: 'campgrounds',
-        filter: ['has', 'point_count'],
+        filter: ['has', 'point_count'], // only cluster points
         paint: {
-            // Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
-            // with three steps to implement three types of circles:
             'circle-color': [
                 'step',
                 ['get', 'point_count'],
-                '#00BCD4',
-                10,
-                '#2196F3',
-                30,
-                '#3F51B5'
+                '#00BCD4',  // < 10
+                10, '#2196F3', // 10–30
+                30, '#3F51B5' // > 30
             ],
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
                 15,
-                10,
-                20,
-                30,
-                25
+                10, 20,
+                30, 25
             ]
         }
     });
 
+
+    /* -----------------------------------------------------
+       CLUSTER COUNT LABELS
+    ------------------------------------------------------ */
     map.addLayer({
         id: 'cluster-count',
         type: 'symbol',
@@ -67,11 +95,15 @@ map.on('load', function () {
         }
     });
 
+
+    /* -----------------------------------------------------
+       UNCLUSTERED (INDIVIDUAL) CAMPGROUND POINTS
+    ------------------------------------------------------ */
     map.addLayer({
         id: 'unclustered-point',
         type: 'circle',
         source: 'campgrounds',
-        filter: ['!', ['has', 'point_count']],
+        filter: ['!', ['has', 'point_count']], // points that are not clusters
         paint: {
             'circle-color': '#11b4da',
             'circle-radius': 4,
@@ -80,30 +112,31 @@ map.on('load', function () {
         }
     });
 
-    // inspect a cluster on click
+
+    /* -----------------------------------------------------
+       CLICK EVENTS
+    ------------------------------------------------------ */
+
+    // Expand a cluster when clicked
     map.on('click', 'clusters', async (e) => {
-        const features = map.queryRenderedFeatures(e.point, {
-            layers: ['clusters']
-        });
+        const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
         const clusterId = features[0].properties.cluster_id;
+
+        // Determine a zoom level that expands this cluster
         const zoom = await map.getSource('campgrounds').getClusterExpansionZoom(clusterId);
+
         map.easeTo({
             center: features[0].geometry.coordinates,
             zoom
         });
     });
 
-    // When a click event occurs on a feature in
-    // the unclustered-point layer, open a popup at
-    // the location of the feature, with
-    // description HTML from its properties.
+    // Open a popup when clicking an individual (unclustered) point
     map.on('click', 'unclustered-point', function (e) {
         const { popUpMarkup } = e.features[0].properties;
         const coordinates = e.features[0].geometry.coordinates.slice();
 
-        // Ensure that if the map is zoomed out such that
-        // multiple copies of the feature are visible, the
-        // popup appears over the copy being pointed to.
+        // Fix for world-wrapping (if map is zoomed out wide)
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
@@ -114,10 +147,15 @@ map.on('load', function () {
             .addTo(map);
     });
 
+
+    /* -----------------------------------------------------
+       HOVER EFFECTS (Change cursor to pointer)
+    ------------------------------------------------------ */
     map.on('mouseenter', 'clusters', () => {
         map.getCanvas().style.cursor = 'pointer';
     });
     map.on('mouseleave', 'clusters', () => {
         map.getCanvas().style.cursor = '';
     });
+
 });

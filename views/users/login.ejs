@@ -4,29 +4,70 @@
     <div class="row">
         <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
             <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1454537468202-b8ff7cdab12c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-                    alt="Camping at night image" class="card-img-top" />
+
+                <!-- Background image -->
+                <img src="https://images.unsplash.com/photo-1454537468202-b8ff7cdab12c?auto=format&fit=crop&w=1350&q=80"
+                     alt="Camping at night image"
+                     class="card-img-top" />
+
                 <div class="card-body">
                     <h5 class="card-title">Login</h5>
+
+                    <!-- LOGIN FORM -->
                     <form action="/login" method="POST" class="validated-form" novalidate>
+
+                        <!-- Username -->
                         <div class="mb-3">
                             <label class="form-label" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" required autofocus>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+                            <input class="form-control"
+                                   type="text"
+                                   id="username"
+                                   name="username"
+                                   required
+                                   autocomplete="username"
+                                   autofocus>
+                            <div class="valid-feedback">Looks good!</div>
                         </div>
+
+                        <!-- Password -->
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                            <div class="valid-feedback">
-                                Looks good!
+
+                            <div class="input-group">
+                                <input class="form-control"
+                                       type="password"
+                                       id="password"
+                                       name="password"
+                                       required
+                                       minlength="8"
+                                       autocomplete="current-password">
+
+                                <!-- SHOW/HIDE PASSWORD BUTTON -->
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
+                                    Show
+                                </button>
                             </div>
+
+                            <small class="text-muted">
+                                Password must be at least 8 characters.
+                            </small>
+
+                            <div class="valid-feedback">Looks good!</div>
                         </div>
-                        <button class="btn btn-success btn-block">Login</button>
+
+                        <button class="btn btn-success w-100">Login</button>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Show/hide password script -->
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = (input.type === "password") ? "text" : "password";
+}
+</script>

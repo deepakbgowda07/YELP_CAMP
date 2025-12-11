@@ -4,36 +4,99 @@
     <div class="row">
         <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
             <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
-                    alt="" class="card-img-top" />
+
+                <!-- Background image -->
+                <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?auto=format&fit=crop&w=1267&q=80"
+                     alt="Registration"
+                     class="card-img-top" />
+
                 <div class="card-body">
                     <h5 class="card-title">Register</h5>
+
+                    <!-- REGISTER FORM -->
                     <form action="/register" method="POST" class="validated-form" novalidate>
+
+                        <!-- Username -->
                         <div class="mb-3">
                             <label class="form-label" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" required autofocus>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+                            <input class="form-control"
+                                   type="text"
+                                   id="username"
+                                   name="username"
+                                   required
+                                   minlength="3"
+                                   autocomplete="username"
+                                   autofocus>
+                            <div class="valid-feedback">Looks good!</div>
                         </div>
+
+                        <!-- Email -->
                         <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
-                            <input class="form-control" type="email" id="email" name="email" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+
+                            <input class="form-control"
+                                   type="email"
+                                   id="email"
+                                   name="email"
+                                   required
+                                   autocomplete="email"
+                                   pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$">
+
+                            <!-- ❗ If you want Gmail-only, replace pattern with: 
+                                 pattern="^[A-Za-z0-9._%+-]+@gmail\.com$"
+                            -->
+
+                            <small class="text-muted">
+                                Must be a valid email address.
+                            </small>
+
+                            <div class="valid-feedback">Looks good!</div>
                         </div>
+
+                        <!-- Password -->
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                            <div class="valid-feedback">
-                                Looks good!
+
+                            <div class="input-group">
+                                <input class="form-control"
+                                       type="password"
+                                       id="password"
+                                       name="password"
+                                       required
+                                       minlength="8"
+                                       pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}"
+                                       autocomplete="new-password">
+
+                                <button type="button" class="btn btn-outline-secondary"
+                                        onclick="togglePassword('password')">
+                                    Show
+                                </button>
                             </div>
+
+                            <small class="text-muted">
+                                Must include:
+                                <br>— At least 8 characters  
+                                <br>— One uppercase letter  
+                                <br>— One number  
+                                <br>— One special character (@$!%*?&)  
+                            </small>
+
+                            <div class="valid-feedback">Looks good!</div>
                         </div>
-                        <button class="btn btn-success btn-block">Register</button>
+
+                        <button class="btn btn-success w-100">Register</button>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Password toggle -->
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = (input.type === "password") ? "text" : "password";
+}
+</script>
