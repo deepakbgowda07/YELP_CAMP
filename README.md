@@ -50,15 +50,7 @@ A full-featured CRUD application where users can create, edit, review, and explo
 | Frontend | EJS Templates + Bootstrap 5 |
 | Deployment | (Optional: Render, Railway, Heroku) |
 
----
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_KEY=your_cloudinary_api_key
-CLOUDINARY_SECRET=your_cloudinary_api_secret
 
-MAPTILER_API_KEY=your_maptiler_key
-
-DB_URL=mongodb://127.0.0.1:27017/yelp-camp
-SECRET=your_session_secret
 
 
 
@@ -66,47 +58,7 @@ SECRET=your_session_secret
 git clone https://github.com/deepakbgowda07/YELP_CAMP.git
 cd YELP_CAMP
 
-YELP_CAMP/
-│
-├── app.js                # Main Express app
-├── .env                  # Env variables
-├── package.json          # Dependencies
-│
-├── models/               # Mongoose models
-│   ├── campground.js
-│   ├── review.js
-│   └── user.js
-│
-├── controllers/          # Route logic
-│   ├── campground.js
-│   ├── review.js
-│   └── users.js
-│
-├── routes/               # Express routers
-│   ├── campground.js
-│   ├── review.js
-│   └── users.js
-│
-├── public/               # Static assets
-│   ├── javascripts/
-│   │   ├── clusterMap.js
-│   │   ├── showPageMap.js
-│   │   ├── formMap.js
-│   │   └── validateForms.js
-│   ├── stylesheets/
-│   │   ├── app.css
-│   │   ├── home.css
-│   │   └── stars.css
-│
-├── views/                # EJS templates
-│   ├── campgrounds/
-│   ├── layouts/
-│   ├── partials/
-│   └── users/
-│
-└── utils/                # Utilities
-    ├── catchAsync.js
-    └── ExpressError.js
+
 
 
 
