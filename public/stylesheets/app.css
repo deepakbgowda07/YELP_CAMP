@@ -1,0 +1,28 @@
+/* This file is for general application styling not covered by Bootstrap or home.css/map.css.
+It ensures images are responsive and form styling is correct across the application.
+*/
+
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Fix for custom file input styling on Bootstrap 5 alpha */
+.form-file-label {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.form-file-button {
+    text-align: center;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+/* Ensure images are fluid within their containers */
+.img-fluid {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}

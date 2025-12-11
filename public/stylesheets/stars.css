@@ -1,0 +1,73 @@
+.starability-result {
+    position: relative;
+    width: 150px;
+    height: 25px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
+    font-size: 0.1em;
+    color: transparent;
+}
+
+.starability-result:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    height: 25px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
+    background-repeat: repeat-x;
+}
+
+.starability-result[data-rating="5"]::after {
+    width: 150px;
+}
+
+.starability-result[data-rating="4"]::after {
+    width: 120px;
+}
+
+.starability-result[data-rating="3"]::after {
+    width: 90px;
+}
+
+.starability-result[data-rating="2"]::after {
+    width: 60px;
+}
+
+.starability-result[data-rating="1"]::after {
+    width: 30px;
+}
+
+.starability-basic {
+    display: block;
+    position: relative;
+    width: 150px;
+    min-height: 60px;
+    padding: 0;
+    border: none;
+}
+
+.starability-basic input {
+    position: absolute;
+    margin-right: -100%;
+    opacity: 0;
+}
+
+.starability-basic label {
+    display: inline-block;
+    float: left;
+    width: 30px;
+    height: 30px;
+    font-size: 0.1em;
+    color: transparent;
+    cursor: pointer;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
+}
+
+.starability-basic input:checked ~ label,
+.starability-basic label:hover,
+.starability-basic label:hover ~ label {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAQ...");
+}
+
+.starability-basic .input-no-rate {
+    display: none;
+}

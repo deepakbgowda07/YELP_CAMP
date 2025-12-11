@@ -8,11 +8,20 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
         integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
+    <link
+      href="https://cdn.maptiler.com/maptiler-geocoding-control/v1.2.0/maptiler-geocoding-control.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/stylesheets/app.css">
 </head>
 
-<body class="d-flex flex-column vh-100">
+<body class="d-flex flex-column min-vh-100">
     <%- include('../partials/navbar')%>
     <main class="container mt-5">
+        <%- include('../partials/flash')%>
         <%- body %>
     </main>
     <%- include('../partials/footer')%>
@@ -23,30 +32,7 @@
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
         crossorigin="anonymous"></script>
 
-
-    <script>
-        (function () {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.validated-form')
-
-            // Loop over them and prevent submission
-            Array.from(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    </script>
-
-
+        <script src="/javascripts/validateForms.js"></script>
 </body>
 
 </html>

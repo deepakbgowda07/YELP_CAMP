@@ -1,16 +1,26 @@
-maptilersdk.config.apiKey = maptilerApiKey;
+maptilersdk.config.apiKey = mapToken;
 
 const map = new maptilersdk.Map({
-    container: 'map',
+    container: 'cluster-map',
     style: maptilersdk.MapStyle.BRIGHT,
     center: [-103.59179687498357, 40.66995747013945],
     zoom: 3
 });
 
 map.on('load', function () {
+    // Add a geojson point source.
     map.addSource('campgrounds', {
         type: 'geojson',
-        data: campgrounds,
+        data: {
+            type: 'FeatureCollection',
+            features: campgroundsData.map(campground => ({
+                type: 'Feature',
+                geometry: campground.geometry,
+                properties: {
+                    popUpMarkup: campground.properties?.popUpMarkup || `<strong><a href="/campgrounds/${campground._id}">${campground.title}</a></strong>`
+                }
+            }))
+        },
         cluster: true,
         clusterMaxZoom: 14, // Max zoom to cluster points on
         clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -52,7 +62,7 @@ map.on('load', function () {
         filter: ['has', 'point_count'],
         layout: {
             'text-field': '{point_count_abbreviated}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-font': ['Noto Sans Regular'],
             'text-size': 12
         }
     });
