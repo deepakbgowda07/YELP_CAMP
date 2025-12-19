@@ -10,6 +10,8 @@
  */
 
 // Load .env variables in development environment
+
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
@@ -45,10 +47,17 @@ const reviewRoutes = require('./routes/review');
 ------------------------------------------------------ */
 
 // Connect to local MongoDB database
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+const dbUrl = process.env.DB_URL;
+
+mongoose.connect(dbUrl)
+    .then(() => {
+        console.log("MongoDB Atlas Connected");
+    })
+    .catch(err => {
+        console.log("MongoDB connection error:");
+        console.log(err);
+    });
+
 
 const db = mongoose.connection;
 
@@ -91,7 +100,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Basic session setup (sufficient for development)
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!',  // You may move this to .env
+    secret: process.env.SECRET || 'fallbacksecret',  // You may move this to .env
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -180,6 +189,9 @@ app.use((err, req, res, next) => {
    START SERVER
 ------------------------------------------------------ */
 
-app.listen(3000, () => {
-    console.log('Serving on port 3000');
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`);
 });
+
