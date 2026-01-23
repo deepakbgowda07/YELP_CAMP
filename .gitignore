@@ -1,18 +1,55 @@
 # Environment variables
 .env
+.env.local
+.env.*.local
 
 # Node modules
 node_modules/
+package-lock.json
+yarn.lock
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+*.log
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # IDE / Editor
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.sublime-workspace
+
+# Build / Dist
+dist/
+build/
+.next/
+out/
+
+# Dependencies
+/.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.pem
+.cache/

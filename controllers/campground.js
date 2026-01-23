@@ -16,20 +16,35 @@
 const Campground = require('../models/campground');
 const { cloudinary } = require('../cloudinary');
 const maptilerClient = require("@maptiler/client");
+const { getRelativeTime } = require('../utils/timeFormatter');
 
 // Configure MapTiler using API key from .env
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 
 /* -----------------------------------------------------
-   GET: List all campgrounds
+   GET: List all campgrounds (with optional search filter)
 ------------------------------------------------------ */
 /**
  * Renders the index page with a list of all campgrounds.
+ * Supports search by name or location via query parameter.
  */
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds });
+    const searchQuery = req.query.search || '';
+    
+    let campgrounds;
+    if (searchQuery) {
+        campgrounds = await Campground.find({
+            $or: [
+                { title: { $regex: searchQuery, $options: 'i' } },
+                { location: { $regex: searchQuery, $options: 'i' } }
+            ]
+        });
+    } else {
+        campgrounds = await Campground.find({});
+    }
+    
+    res.render('campgrounds/index', { campgrounds, searchQuery, getRelativeTime });
 };
 
 
@@ -111,7 +126,7 @@ module.exports.showCampground = async (req, res) => {
         return res.redirect('/campgrounds');
     }
 
-    res.render('campgrounds/show', { campground });
+    res.render('campgrounds/show', { campground, getRelativeTime });
 };
 
 

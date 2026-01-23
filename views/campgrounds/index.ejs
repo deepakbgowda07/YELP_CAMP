@@ -11,7 +11,35 @@
      Campgrounds List Section
 ------------------------------------------------------ -->
 <div class="container">
-  <h1>All Campgrounds</h1>
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+      <h1>All Campgrounds</h1>
+    </div>
+    <div class="col-md-6">
+      <form class="d-flex gap-2" method="get" action="/campgrounds">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by name or location..." 
+          name="search"
+          value="<%= searchQuery %>">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <% if (searchQuery) { %>
+          <a href="/campgrounds" class="btn btn-outline-secondary">Clear</a>
+        <% } %>
+      </form>
+    </div>
+  </div>
+
+  <% if (searchQuery && campgrounds.length === 0) { %>
+    <div class="alert alert-info" role="alert">
+      No campgrounds found matching "<%= searchQuery %>". Try a different search term.
+    </div>
+  <% } %>
+
+  <% if (campgrounds.length > 0) { %>
+    <p class="text-muted mb-3"><%= campgrounds.length %> campground<%= campgrounds.length !== 1 ? 's' : '' %> found</p>
+  <% } %>
 
   <% for (let campground of campgrounds) { %>
     <div class="card mb-3">
@@ -52,7 +80,11 @@
 
             <p class="card-text">
               <small class="text-muted">
-                <%= campground.location %>
+                📍 <%= campground.location %>
+              </small>
+              <br>
+              <small class="text-muted">
+                 Added <%= getRelativeTime(campground.createdAt) %>
               </small>
             </p>
 

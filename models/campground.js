@@ -41,7 +41,7 @@ ImageSchema.virtual('thumbnail').get(function () {
 
 
 /* Enable virtuals to show up in JSON (e.g., when using map popups) */
-const opts = { toJSON: { virtuals: true } };
+const opts = { toJSON: { virtuals: true }, timestamps: true };
 
 
 /* -----------------------------------------------------
